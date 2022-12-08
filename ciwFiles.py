@@ -46,7 +46,7 @@ def simu(time, nb):
         waits = [r.waiting_time for r in recs]
         mean_waits = sum(waits)/len(waits)
         print(f"Temps moyen d'attente de la simulation n°{i}: {mean_waits}")
-        average_waits[f"{nb} exécutions"] = mean_waits
+        average_waits[f"{nb}"] = mean_waits
 
 
 while nbexecs <= 600:
