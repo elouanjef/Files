@@ -48,10 +48,13 @@ def simu(time, nb):
         print(f"Temps moyen d'attente de la simulation n°{i}: {mean_waits}")
         average_waits[f"{nb}"] = mean_waits
 
+# while nbexecs <= 600:
+#      simu(simtime, nbexecs)
+#      nbexecs+=10
 
-while nbexecs <= 600:
+while simtime <= 100:
      simu(simtime, nbexecs)
-     nbexecs+=10
+     simtime+=10
 
 
 print(average_waits)
