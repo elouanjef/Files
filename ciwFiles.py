@@ -32,7 +32,7 @@ N=ciw.create_network(
 )
 
 average_waits = []
-simtime = 180
+simtime = 2
 
 for s in range(1000):
     ciw.seed(s)
@@ -40,7 +40,10 @@ for s in range(1000):
     Q.simulate_until_max_time(simtime)
     recs = Q.get_all_records()
     waits = [r.waiting_time for r in recs]
-    average_waits.append(sum(waits)/len(waits))
+    mean_waits = sum(waits)/len(waits)
+
+    print(f"Temps moyen d'attente de la simulation n°{s}: {mean_waits}")
+    average_waits.append(mean_waits)
 
 mean_waiting_time = sum(average_waits)/len(average_waits)
 print("Temps moyen d'attente: ", mean_waiting_time)
