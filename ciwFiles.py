@@ -34,7 +34,7 @@ N=ciw.create_network(
 )
 
 average_waits = {}
-simtime = 2
+simtime = 10
 nbexecs = 50
 
 def simu(time, nb):
@@ -46,7 +46,7 @@ def simu(time, nb):
         waits = [r.waiting_time for r in recs]
         mean_waits = sum(waits)/len(waits)
         print(f"Temps moyen d'attente de la simulation n°{i}: {mean_waits}")
-        average_waits[f"{nb}"] = mean_waits
+        average_waits[f"{time}"] = mean_waits
 
 # while nbexecs <= 600:
 #      simu(simtime, nbexecs)
