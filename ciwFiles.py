@@ -1,4 +1,6 @@
 import ciw
+import matplotlib.pyplot as plt
+
 I=0.001
 Y=0.0001
 R=10000
@@ -31,19 +33,34 @@ N=ciw.create_network(
 
 )
 
-average_waits = []
+average_waits = {}
 simtime = 2
+nbexecs = 50
 
-for s in range(1000):
-    ciw.seed(s)
-    Q = ciw.Simulation(N)
-    Q.simulate_until_max_time(simtime)
-    recs = Q.get_all_records()
-    waits = [r.waiting_time for r in recs]
-    mean_waits = sum(waits)/len(waits)
+def simu(time, nb):
+    for i in range(nb):
+        ciw.seed(i)
+        Q = ciw.Simulation(N)
+        Q.simulate_until_max_time(simtime)
+        recs = Q.get_all_records()
+        waits = [r.waiting_time for r in recs]
+        mean_waits = sum(waits)/len(waits)
+        print(f"Temps moyen d'attente de la simulation n°{i}: {mean_waits}")
+        average_waits[f"{nb} exécutions"] = mean_waits
 
-    print(f"Temps moyen d'attente de la simulation n°{s}: {mean_waits}")
-    average_waits.append(mean_waits)
+
+while nbexecs <= 600:
+     simu(simtime, nbexecs)
+     nbexecs+=10
+
+
+print(average_waits)
+
+graph = average_waits.items()
+x, y = zip(*graph)
+
+plt.plot(x, y)
+plt.show()
 
 mean_waiting_time = sum(average_waits)/len(average_waits)
-print("Temps moyen d'attente: ", mean_waiting_time)
+print(f"Temps moyen d'attente: {mean_waiting_time}")
