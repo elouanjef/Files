@@ -41,7 +41,7 @@ def simu(time, nb):
     for i in range(nb):
         ciw.seed(i)
         Q = ciw.Simulation(N)
-        Q.simulate_until_max_time(simtime)
+        Q.simulate_until_max_time(time)
         recs = Q.get_all_records()
         waits = [r.waiting_time for r in recs]
         mean_waits = sum(waits)/len(waits)
