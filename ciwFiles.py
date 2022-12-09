@@ -6,6 +6,7 @@ Y=0.0001
 R=10000
 S=1500
 A=30 #entre 10 et 40
+A_P2 = 15
 C=707
 B=16
 F=42.2
@@ -32,15 +33,54 @@ N=ciw.create_network(
     number_of_servers=[1, 1, 1, 1]
 
 )
+N_P2=ciw.create_network(
 
+    arrival_distributions=[
+        ciw.dists.Exponential(rate=A_P2),#SI
+        ciw.dists.NoArrivals(),#SR
+        ciw.dists.NoArrivals(),#SS
+        ciw.dists.NoArrivals()],#SC
 
+    service_distributions=[
+        ciw.dists.Deterministic(value=I),#SI
+        ciw.dists.Exponential(rate=1/(Y+B/R)),#SR
+        ciw.dists.Deterministic(value=B/S),#SS
+        ciw.dists.Deterministic(value=B/C)],#SC
+
+    routing=[
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1],
+        [0, B/F, 0, 0]],
+
+    number_of_servers=[1, 1, 1, 1]
+
+)
 
 average_waits_dict = {}
 average_waits = []
-simtime = 5
-nbexecs = 1
+simtime = 25
+nbexecs = 70
 
 
+def simu_P2(time, nb):
+    sojourn_time = 0
+    for i in range(nb):
+        ciw.seed(i)
+        Q = ciw.Simulation(N_P2)
+        Q.simulate_until_max_time(time)
+        
+        recs = Q.get_all_records()
+        for r in recs:
+            sojourn_time += abs(r.exit_date - r.arrival_date)
+
+        print(f"Simulation n°{i}")
+
+
+    print(f"\nValeur absolue du temps de séjour, avec A=15: {round(sojourn_time, 3)}")
+    print("\nCe temps est mesuré en unités discrètes, c'est-à-dire que chaque unité de temps représente une seule action dans le système.\n")
+
+simu_P2(simtime, nbexecs)
 
 def simu(time, nb):
     for i in range(nb):
@@ -72,34 +112,37 @@ def simu(time, nb):
 # plt.plot(x, y)
 # # plt.show()
 
-I = []
 
-simu(simtime, 1000)
-
-mean_waiting_time = sum(average_waits)/len(average_waits)
-print(f"Temps moyen d'attente: {round(mean_waiting_time, 6)} sec")
-
-prct = 2.5
-confiance = mean_waiting_time*(prct/100)
-gauche = round(mean_waiting_time - confiance, 6)
-droite = round(mean_waiting_time + confiance, 6)
-I = [gauche, droite]
-
-print(I)
-
-# average_waits_dict = {}
-average_waits = []
-# simtime = 10
-nbexecs = 5
-
-cpt = 0
-while True:
-    simu(simtime, nbexecs)
-    mean_waiting_time = sum(average_waits)/len(average_waits)
-    print(f"Moyenne: {mean_waiting_time}")
-    if I[0] < mean_waiting_time < I[1]: break
-    nbexecs+=5
-print(f"A partir d'un temps de {nbexecs}, car il a une moyenne de séjour de {round(mean_waiting_time, 6)} sec et I = [{gauche} ; {droite}]")
+# P1 TACHE2
+# I = []
+#
+# simu(simtime, 1000)
+#
+# mean_waiting_time = sum(average_waits)/len(average_waits)
+# print(f"Temps moyen d'attente: {round(mean_waiting_time, 6)} sec")
+#
+# prct = 2.5
+# confiance = mean_waiting_time*(prct/100)
+# gauche = round(mean_waiting_time - confiance, 6)
+# droite = round(mean_waiting_time + confiance, 6)
+# I = [gauche, droite]
+#
+# print(I)
+#
+# # average_waits_dict = {}
+# average_waits = []
+# # simtime = 10
+# nbexecs = 5
+# cpt = 0
+#
+# while True:
+#     simu(simtime, nbexecs)
+#     mean_waiting_time = sum(average_waits)/len(average_waits)
+#     print(f"Moyenne: {mean_waiting_time}")
+#     if I[0] < mean_waiting_time < I[1]: break
+#     nbexecs+=5
+#
+# print(f"A partir d'un temps de {nbexecs}, car il a une moyenne de séjour de {round(mean_waiting_time, 6)} sec et I = [{gauche} ; {droite}]")
 
 ##------------------------##
 ##---------Tache1---------##
