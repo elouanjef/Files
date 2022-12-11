@@ -6,7 +6,7 @@ Y=0.0001
 R=10000
 S=1500
 A=30 #entre 10 et 40
-A_P2 = 15
+A_P2 = 15 # J'utilise une autre variable
 C=707
 B=16
 F=42.2
@@ -33,6 +33,8 @@ N=ciw.create_network(
     number_of_servers=[1, 1, 1, 1]
 
 )
+
+# Je crée un réseau juste pour la partie 2
 N_P2=ciw.create_network(
 
     arrival_distributions=[
@@ -59,29 +61,17 @@ N_P2=ciw.create_network(
 
 average_waits_dict = {}
 average_waits = []
-simtime = 25
-nbexecs = 70
+simtime = 25 ## pour que ça soit pas trop long non plus
+nbexecs = 70 ## valeur optimale trouvée avec la partie 1
+prct = 2.5 ## Pourcentage de confiance
 
+"""
+DEBUT PARTIE 1
+"""
 
-def simu_P2(time, nb):
-    sojourn_time = 0
-    for i in range(nb):
-        ciw.seed(i)
-        Q = ciw.Simulation(N_P2)
-        Q.simulate_until_max_time(time)
-        
-        recs = Q.get_all_records()
-        for r in recs:
-            sojourn_time += abs(r.exit_date - r.arrival_date)
-
-        print(f"Simulation n°{i}")
-
-
-    print(f"\nValeur absolue du temps de séjour, avec A=15: {round(sojourn_time, 3)}")
-    print("\nCe temps est mesuré en unités discrètes, c'est-à-dire que chaque unité de temps représente une seule action dans le système.\n")
-
-simu_P2(simtime, nbexecs)
-
+"""
+TACHE1 Code pour calculer les valeurs
+"""
 def simu(time, nb):
     for i in range(nb):
         ciw.seed(i)
@@ -102,8 +92,6 @@ def simu(time, nb):
 #      simu(simtime, nbexecs)
 #      simtime+=10
 
-
-
 # print(average_waits)
 #
 # graph = average_waits.items()
@@ -113,7 +101,9 @@ def simu(time, nb):
 # # plt.show()
 
 
-# P1 TACHE2
+"""
+TACHE2 Application, en trouvant la valeur optimale de répétitons
+"""
 # I = []
 #
 # simu(simtime, 1000)
@@ -121,7 +111,6 @@ def simu(time, nb):
 # mean_waiting_time = sum(average_waits)/len(average_waits)
 # print(f"Temps moyen d'attente: {round(mean_waiting_time, 6)} sec")
 #
-# prct = 2.5
 # confiance = mean_waiting_time*(prct/100)
 # gauche = round(mean_waiting_time - confiance, 6)
 # droite = round(mean_waiting_time + confiance, 6)
@@ -143,6 +132,46 @@ def simu(time, nb):
 #     nbexecs+=5
 #
 # print(f"A partir d'un temps de {nbexecs}, car il a une moyenne de séjour de {round(mean_waiting_time, 6)} sec et I = [{gauche} ; {droite}]")
+
+"""
+FIN PARTIE 1
+"""
+
+"""
+DEBUT PARTIE 2
+"""
+
+"""
+TACHE1 Estimation du temps de séjour avec A=15
+"""
+recs = []
+def simu_P2(time, nb):
+    sojourn_time = 0
+    for i in range(nb):
+        ciw.seed(i)
+        Q = ciw.Simulation(N_P2)
+        Q.simulate_until_max_time(time)
+
+        recs = Q.get_all_records()
+        for r in recs:
+            sojourn_time += abs(r.exit_date - r.arrival_date)
+
+        print(f"Simulation n°{i}")
+
+
+    print(f"\nValeur absolue du temps de séjour, avec A=15: {round(sojourn_time, 3)}")
+    print("\nCe temps est mesuré en unités discrètes, c'est-à-dire que chaque unité de temps représente une seule action dans le système.\n")
+    # values = type(recs)
+    # print(recs)
+    # mean_performance = mean(values)
+    # stdev_performance = stdev(values)
+    # print(f"\nEstimation ponctuelle: {mean_performance}")
+    # confidence_interval = (mean_performance - (2-(prct/100))*stdev_performance/sqrt(len(values)), mean_performance + (2-(prct/100))*stdev_performance/sqrt(len(values)))
+    # print(f"\nIntervalle de confiance pour la mesure de performance: {confidence_interval}")
+
+simu_P2(simtime, nbexecs)
+
+
 
 ##------------------------##
 ##---------Tache1---------##
