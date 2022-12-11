@@ -31,39 +31,13 @@ N=ciw.create_network(
         [0, B/F, 0, 0]],
 
     number_of_servers=[1, 1, 1, 1]
-
-)
-
-# Je crée un réseau juste pour la partie 2
-N_P2=ciw.create_network(
-
-    arrival_distributions=[
-        ciw.dists.Exponential(rate=A_P2),#SI
-        ciw.dists.NoArrivals(),#SR
-        ciw.dists.NoArrivals(),#SS
-        ciw.dists.NoArrivals()],#SC
-
-    service_distributions=[
-        ciw.dists.Deterministic(value=I),#SI
-        ciw.dists.Exponential(rate=1/(Y+B/R)),#SR
-        ciw.dists.Deterministic(value=B/S),#SS
-        ciw.dists.Deterministic(value=B/C)],#SC
-
-    routing=[
-        [0, 1, 0, 0],
-        [0, 0, 1, 0],
-        [0, 0, 0, 1],
-        [0, B/F, 0, 0]],
-
-    number_of_servers=[1, 1, 1, 1]
-
 )
 
 average_waits_dict = {}
 average_waits = []
-simtime = 25 ## pour que ça soit pas trop long non plus
+simtime = 10 ## pour que ça soit pas trop long non plus
 nbexecs = 70 ## valeur optimale trouvée avec la partie 1
-prct = 2.5 ## Pourcentage de confiance
+prct = 5 ## Pourcentage de confiance
 
 """
 DEBUT PARTIE 1
@@ -80,7 +54,7 @@ def simu(time, nb):
         recs = Q.get_all_records()
         waits = [r.waiting_time for r in recs]
         mean_waits = sum(waits)/len(waits)
-        print(f"Simulation n°{i}: {round(mean_waits, 6)} sec")
+        print(f"Simulation n°{i+1}: {round(mean_waits, 6)} sec")
         average_waits_dict[f"{time}"] = mean_waits
         average_waits.append(mean_waits)
 
@@ -104,34 +78,34 @@ def simu(time, nb):
 """
 TACHE2 Application, en trouvant la valeur optimale de répétitons
 """
-# I = []
-#
-# simu(simtime, 1000)
-#
-# mean_waiting_time = sum(average_waits)/len(average_waits)
-# print(f"Temps moyen d'attente: {round(mean_waiting_time, 6)} sec")
-#
-# confiance = mean_waiting_time*(prct/100)
-# gauche = round(mean_waiting_time - confiance, 6)
-# droite = round(mean_waiting_time + confiance, 6)
-# I = [gauche, droite]
-#
-# print(I)
-#
-# # average_waits_dict = {}
-# average_waits = []
-# # simtime = 10
-# nbexecs = 5
-# cpt = 0
-#
-# while True:
-#     simu(simtime, nbexecs)
-#     mean_waiting_time = sum(average_waits)/len(average_waits)
-#     print(f"Moyenne: {mean_waiting_time}")
-#     if I[0] < mean_waiting_time < I[1]: break
-#     nbexecs+=5
-#
-# print(f"A partir d'un temps de {nbexecs}, car il a une moyenne de séjour de {round(mean_waiting_time, 6)} sec et I = [{gauche} ; {droite}]")
+I = []
+
+simu(simtime, 1000)
+
+mean_waiting_time = sum(average_waits)/len(average_waits)
+print(f"Temps moyen d'attente: {round(mean_waiting_time, 6)} sec")
+
+confiance = mean_waiting_time*(prct/100)
+gauche = round(mean_waiting_time - confiance, 6)
+droite = round(mean_waiting_time + confiance, 6)
+I = [gauche, droite]
+
+print(I)
+
+# average_waits_dict = {}
+average_waits = []
+# simtime = 10
+nbexecs = 5
+cpt = 0
+
+while True:
+    simu(simtime, nbexecs)
+    mean_waiting_time = sum(average_waits)/len(average_waits)
+    print(f"Moyenne: {mean_waiting_time}")
+    if I[0] < mean_waiting_time < I[1]: break
+    nbexecs+=5
+
+print(f"A partir d'un nombre de {nbexecs} exécutions, ce n'est techniquement plus utile d'augmenter le nombre de répétitions, pour un intervalle de confiance de {prct}, car la une moyenne de séjour de {round(mean_waiting_time, 6)} sec et I = [{gauche} ; {droite}] coincident")
 
 """
 FIN PARTIE 1
@@ -141,26 +115,57 @@ FIN PARTIE 1
 DEBUT PARTIE 2
 """
 
+# Je crée un réseau juste pour la partie 2
+N_P2_T1=ciw.create_network(
+
+    arrival_distributions=[
+        ciw.dists.Exponential(rate=A_P2),#SI
+        ciw.dists.NoArrivals(),#SR
+        ciw.dists.NoArrivals(),#SS
+        ciw.dists.NoArrivals()],#SC
+
+    service_distributions=[
+        ciw.dists.Deterministic(value=I),#SI
+        ciw.dists.Exponential(rate=1/(Y+B/R)),#SR
+        ciw.dists.Deterministic(value=B/S),#SS
+        ciw.dists.Deterministic(value=B/C)],#SC
+
+    routing=[
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1],
+        [0, B/F, 0, 0]],
+
+    number_of_servers=[1, 1, 1, 1]
+)
+
 """
 TACHE1 Estimation du temps de séjour avec A=15
 """
+
 recs = []
-def simu_P2(time, nb):
+def simu_P2_T1(time, nb):
     sojourn_time = 0
     for i in range(nb):
         ciw.seed(i)
-        Q = ciw.Simulation(N_P2)
+        Q = ciw.Simulation(N_P2_T1)
         Q.simulate_until_max_time(time)
 
         recs = Q.get_all_records()
         for r in recs:
             sojourn_time += abs(r.exit_date - r.arrival_date)
 
-        print(f"Simulation n°{i}")
+        print(f"Simulation n°{i+1}")
 
 
     print(f"\nValeur absolue du temps de séjour, avec A=15: {round(sojourn_time, 3)}")
     print("\nCe temps est mesuré en unités discrètes, c'est-à-dire que chaque unité de temps représente une seule action dans le système.\n")
+
+
+    """
+    TACHE2 Ca marche pas zebi, a finir, faut peut-être le faire manuellement, pas en python quoi
+    """
+
     # values = type(recs)
     # print(recs)
     # mean_performance = mean(values)
@@ -169,9 +174,65 @@ def simu_P2(time, nb):
     # confidence_interval = (mean_performance - (2-(prct/100))*stdev_performance/sqrt(len(values)), mean_performance + (2-(prct/100))*stdev_performance/sqrt(len(values)))
     # print(f"\nIntervalle de confiance pour la mesure de performance: {confidence_interval}")
 
-simu_P2(simtime, nbexecs)
+# simu_P2_T1(simtime, nbexecs)
 
+def networkP2_T2(A):
 
+    N_P2_T2=ciw.create_network(
+
+        arrival_distributions=[
+            ciw.dists.Exponential(rate=A),#SI
+            ciw.dists.NoArrivals(),#SR
+            ciw.dists.NoArrivals(),#SS
+            ciw.dists.NoArrivals()],#SC
+
+        service_distributions=[
+            ciw.dists.Deterministic(value=I),#SI
+            ciw.dists.Exponential(rate=1/(Y+B/R)),#SR
+            ciw.dists.Deterministic(value=B/S),#SS
+            ciw.dists.Deterministic(value=B/C)],#SC
+
+        routing=[
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1],
+            [0, B/F, 0, 0]],
+
+        number_of_servers=[1, 1, 1, 1]
+    )
+
+    return N_P2_T2
+
+simtime = 12
+tabA = []
+tabSojourn = []
+def simu_P2_T2(time, nb, newA):
+    sojourn_time = 0
+    N_P2_T2= networkP2_T2(newA)
+    for i in range(nb):
+        ciw.seed(i)
+        Q = ciw.Simulation(N_P2_T2)
+        Q.simulate_until_max_time(time)
+
+        recs = Q.get_all_records()
+        for r in recs:
+            sojourn_time += abs(r.exit_date - r.arrival_date)
+
+        print(f"Simulation n°{i+1}")
+
+    print(sojourn_time)
+    tabSojourn.append(sojourn_time)
+
+# for a in range(15, 51):
+#     print(f"A={a}")
+#     simu_P2_T2(simtime, nbexecs, a)
+#     tabA.append(a)
+
+print(f"A: {tabA}")
+print(f"Sojourn: {tabSojourn}")
+
+plt.plot(tabA, tabSojourn)
+plt.show()
 
 ##------------------------##
 ##---------Tache1---------##
