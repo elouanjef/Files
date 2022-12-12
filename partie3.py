@@ -32,6 +32,7 @@ def simu(time, nb, tache):
 
     if tache == "tache1":
         v.tabS.append(v.sojourn_time)
+    print(v.tabS)
 
 """
 \ Code
@@ -47,7 +48,7 @@ if tache == "tache1":
     minA = 15
     maxA = 36
 
-    n.set_A(15) 
+    n.set_A(15)
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")
@@ -56,10 +57,17 @@ if tache == "tache1":
         n.reset_network()
         v.tabA.append(a)
 
+    """
+    En sortie ->
+    """
+    tabSim1 = v.tabS
+
     # First simulation
     axis[0, 0].plot(v.tabA, v.tabS)
     axis[0, 0].set_title("Normal")
 
+    v.tabA = []
+    v.tabS = []
     n.set_A(15)
     n.set_R(n.R*2)
     n.reset_network()
@@ -70,10 +78,17 @@ if tache == "tache1":
         n.reset_network()
         v.tabA.append(a)
 
+    """
+    En sortie ->
+    """
+    tabSim2 = v.tabS
+
     # Second simulation
     axis[0, 1].plot(v.tabA, v.tabS)
     axis[0, 1].set_title("Double R")
 
+    v.tabA = []
+    v.tabS = []
     n.reset_R()
     n.set_A(15)
     n.set_S(n.S*2)
@@ -85,10 +100,17 @@ if tache == "tache1":
         n.reset_network()
         v.tabA.append(a)
 
+    """
+    En sortie ->
+    """
+    tabSim3 = v.tabS
+
     # Third simulation
     axis[1, 0].plot(v.tabA, v.tabS)
     axis[1, 0].set_title("Double S")
 
+    v.tabA = []
+    v.tabS = []
     n.reset_S()
     n.set_A(15)
     n.set_SR(n.SR*2)
@@ -99,6 +121,11 @@ if tache == "tache1":
         n.set_A(a)
         n.reset_network()
         v.tabA.append(a)
+
+    """
+    En sortie ->
+    """
+    tabSim4 = v.tabS
 
     # Fourth simulation
     axis[1, 1].plot(v.tabA, v.tabS)

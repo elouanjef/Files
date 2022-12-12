@@ -8,3 +8,6 @@ class Values:
         self.tabA = []
         self.tabS = []
         self.sojourn_time = 0
+
+    def reset_sojourn(self):
+        self.tabS = []
