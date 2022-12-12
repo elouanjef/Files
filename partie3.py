@@ -45,9 +45,9 @@ if tache == "tache1":
 
     figure, axis = plt.subplots(2,2)
     minA = 15
-    maxA = 51
+    maxA = 36
 
-    n.set_R(n.R*2)
+    n.set_A(15) 
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")
@@ -58,7 +58,21 @@ if tache == "tache1":
 
     # First simulation
     axis[0, 0].plot(v.tabA, v.tabS)
-    axis[0, 0].set_title("Double R")
+    axis[0, 0].set_title("Normal")
+
+    n.set_A(15)
+    n.set_R(n.R*2)
+    n.reset_network()
+    for a in range(minA, maxA):
+        print(f"A={a}")
+        simu(v.simtime, v.nbexecs, tache)
+        n.set_A(a)
+        n.reset_network()
+        v.tabA.append(a)
+
+    # Second simulation
+    axis[0, 1].plot(v.tabA, v.tabS)
+    axis[0, 1].set_title("Double R")
 
     n.reset_R()
     n.set_A(15)
@@ -71,9 +85,9 @@ if tache == "tache1":
         n.reset_network()
         v.tabA.append(a)
 
-    # Second simulation
-    axis[0, 1].plot(v.tabA, v.tabS)
-    axis[0, 1].set_title("Double S")
+    # Third simulation
+    axis[1, 0].plot(v.tabA, v.tabS)
+    axis[1, 0].set_title("Double S")
 
     n.reset_S()
     n.set_A(15)
@@ -86,7 +100,7 @@ if tache == "tache1":
         n.reset_network()
         v.tabA.append(a)
 
-    # Third simulation
-    axis[1, 0].plot(v.tabA, v.tabS)
-    axis[1, 0].set_title("Double SR")
+    # Fourth simulation
+    axis[1, 1].plot(v.tabA, v.tabS)
+    axis[1, 1].set_title("Double SR")
     plt.show()
