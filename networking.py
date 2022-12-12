@@ -21,9 +21,11 @@ class NetworkValues:
 
     def set_R(self, R):
         self.R = R
+        self.reset_SR()
 
     def reset_R(self):
         self.R = 10000
+        self.reset_SR()
 
     def set_S(self, S):
         self.S = S

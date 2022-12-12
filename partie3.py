@@ -11,7 +11,7 @@ v = Values()
 n = NetworkValues()
 n.set_A(15)
 n.reset_network()
-tache = "tache1"
+tache = "tache3"
 
 """
 Code /
@@ -30,8 +30,7 @@ def simu(time, nb, tache):
 
         print(f"Simulation n°{i+1}")
 
-    if tache == "tache1":
-        v.tabS.append(v.sojourn_time)
+    v.tabS.append(v.sojourn_time)
     print(v.tabS)
 
 """
@@ -42,12 +41,14 @@ def simu(time, nb, tache):
 TACHE1
 """
 
+minA = 15
+maxA = 31
+
 if tache == "tache1":
 
     figure, axis = plt.subplots(2,2)
-    minA = 15
-    maxA = 36
 
+    # Simulation système initial
     n.set_A(15)
     n.reset_network()
     for a in range(minA, maxA):
@@ -61,11 +62,10 @@ if tache == "tache1":
     En sortie ->
     """
     tabSim1 = v.tabS
-
-    # First simulation
     axis[0, 0].plot(v.tabA, v.tabS)
     axis[0, 0].set_title("Normal")
 
+    # First simulation
     v.tabA = []
     v.tabS = []
     n.set_A(15)
@@ -82,11 +82,10 @@ if tache == "tache1":
     En sortie ->
     """
     tabSim2 = v.tabS
-
-    # Second simulation
     axis[0, 1].plot(v.tabA, v.tabS)
     axis[0, 1].set_title("Double R")
 
+    # Second simulation
     v.tabA = []
     v.tabS = []
     n.reset_R()
@@ -104,11 +103,10 @@ if tache == "tache1":
     En sortie ->
     """
     tabSim3 = v.tabS
-
-    # Third simulation
     axis[1, 0].plot(v.tabA, v.tabS)
     axis[1, 0].set_title("Double S")
 
+    # Third simulation
     v.tabA = []
     v.tabS = []
     n.reset_S()
@@ -126,8 +124,120 @@ if tache == "tache1":
     En sortie ->
     """
     tabSim4 = v.tabS
-
-    # Fourth simulation
     axis[1, 1].plot(v.tabA, v.tabS)
     axis[1, 1].set_title("Double SR")
+
+    print(f"\n{tabSim1}\n{tabSim2}\n{tabSim3}\n{tabSim4}")
+    plt.show()
+
+if tache == "tache2":
+
+    # Simulation système initial
+    n.set_A(15)
+    n.reset_network()
+    for a in range(minA, maxA):
+        print(f"A={a}")
+        simu(v.simtime, v.nbexecs, tache)
+        n.set_A(a)
+        n.reset_network()
+        v.tabA.append(a)
+
+    """
+    En sortie ->
+    """
+    tabSim1 = v.tabS
+
+    # First simulation
+    v.tabA = []
+    v.tabS = []
+    n.set_A(15)
+    n.set_R(n.R*2)
+    n.reset_network()
+    for a in range(minA, maxA):
+        print(f"A={a}")
+        simu(v.simtime, v.nbexecs, tache)
+        n.set_A(a)
+        n.reset_network()
+        v.tabA.append(a)
+
+    tabSim2 = v.tabS
+
+    tabSim = []
+    for i in range(len(v.tabA)):
+        calc = abs(tabSim2[i] - tabSim1[i])
+        tabSim.append(calc)
+
+    plt.plot(v.tabA, tabSim)
+    plt.show()
+
+if tache == "tache3":
+
+    v.tabA = []
+    v.tabS = []
+    n.set_A(15)
+    n.set_R(n.R*2)
+    n.reset_network()
+    for a in range(minA, maxA):
+        print(f"A={a}")
+        simu(v.simtime, v.nbexecs, tache)
+        n.set_A(a)
+        n.reset_network()
+        v.tabA.append(a)
+
+    tabSim2 = v.tabS
+
+    v.tabA = []
+    v.tabS = []
+    n.set_A(15)
+    n.set_R(n.S*2)
+    n.reset_network()
+    for a in range(minA, maxA):
+        print(f"A={a}")
+        simu(v.simtime, v.nbexecs, tache)
+        n.set_A(a)
+        n.reset_network()
+        v.tabA.append(a)
+
+    tabSim3 = v.tabS
+
+    v.tabA = []
+    v.tabS = []
+    n.set_A(15)
+    n.set_R(n.SR*2)
+    n.reset_network()
+    for a in range(minA, maxA):
+        print(f"A={a}")
+        simu(v.simtime, v.nbexecs, tache)
+        n.set_A(a)
+        n.reset_network()
+        v.tabA.append(a)
+
+    tabSim4 = v.tabS
+
+    figure, axis = plt.subplots(2,2)
+
+    tabSimRes1 = []
+    for i in range(len(v.tabA)):
+        calc = abs(tabSim2[i] - tabSim3[i])
+        tabSimRes1.append(calc)
+
+    axis[0, 0].plot(v.tabA, tabSimRes1)
+    axis[0, 0].set_title("Double R et Double S")
+
+    tabSimRes2 = []
+    for i in range(len(v.tabA)):
+        calc = abs(tabSim2[i] - tabSim4[i])
+        tabSimRes2.append(calc)
+
+    axis[0, 1].plot(v.tabA, tabSimRes2)
+    axis[0, 1].set_title("Double R et Double SR")
+
+    tabSimRes3 = []
+    for i in range(len(v.tabA)):
+        calc = abs(tabSim3[i] - tabSim4[i])
+        tabSimRes3.append(calc)
+
+    axis[1, 0].plot(v.tabA, tabSimRes3)
+    axis[1, 0].set_title("Double S et Double SR")
+
     plt.show()
