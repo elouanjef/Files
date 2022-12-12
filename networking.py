@@ -10,17 +10,38 @@ class NetworkValues:
         self.C = 707
         self.B = 16
         self.F = 42.2
-        self.N = self.network_creation(self.A)
+        self.SR = 1/(self.Y+self.B/self.R)
+        self.N = self.network_creation()
 
     def set_A(self, A):
         self.A = A
-        return A
+
+    def reset_A(self):
+        self.A = 30
+
+    def set_R(self, R):
+        self.R = R
+
+    def reset_R(self):
+        self.R = 10000
+
+    def set_S(self, S):
+        self.S = S
+
+    def reset_S(self):
+        self.S = 1500
+
+    def set_SR(self, SR):
+        self.SR = SR
+
+    def reset_SR(self):
+        self.SR = 1/(self.Y+self.B/self.R)
 
     def reset_network(self):
-        self.N = self.network_creation(self.A)
+        self.N = self.network_creation()
         return self.N
 
-    def network_creation(self, A):
+    def network_creation(self):
 
         N = ciw.create_network(
 
@@ -32,7 +53,7 @@ class NetworkValues:
 
             service_distributions=[
                 ciw.dists.Deterministic(value=self.I),#SI
-                ciw.dists.Exponential(rate=1/(self.Y+self.B/self.R)),#SR
+                ciw.dists.Exponential(rate=self.SR),#SR
                 ciw.dists.Deterministic(value=self.B/self.S),#SS
                 ciw.dists.Deterministic(value=self.B/self.C)],#SC
 
@@ -45,5 +66,4 @@ class NetworkValues:
             number_of_servers=[1, 1, 1, 1]
         )
 
-        self.N = N
         return N

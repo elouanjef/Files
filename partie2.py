@@ -47,7 +47,7 @@ def simu(time, nb, tache):
         print("\nCe temps est mesuré en unités discrètes, c'est-à-dire que chaque unité de temps représente une seule action dans le système.\n")
 
     elif tache == "tache2":
-        v.tabSojourn.append(v.sojourn_time)
+        v.tabS.append(v.sojourn_time)
 
 """
 \ Code
@@ -60,7 +60,7 @@ TACHE1 Estimation du temps de séjour avec A = 15
 if tache == "tache1":
     n.set_A(15) # On set la valeur du A au cas où
     n.reset_network() # On recrée un réseau avec cette valeur
-    simu(v.simtime, v.nbexecs, "tache1") # On fait nbexecs simulations avec A = 15
+    simu(v.simtime, v.nbexecs, tache) # On fait nbexecs simulations avec A = 15
 
 """
 TACHE2
@@ -87,11 +87,11 @@ d’arrivée A.
 if tache == "tache2":
     for a in range(15, 51):
         print(f"A={a}")
-        simu(v.simtime, v.nbexecs, "tache2")
+        simu(v.simtime, v.nbexecs, tache)
         n.set_A(a)
         n.reset_network()
         v.tabA.append(a)
-    plt.plot(v.tabA, v.tabSojourn) # Graphe avec x = tabA et y = tabSojourn
+    plt.plot(v.tabA, v.tabS) # Graphe avec x = tabA et y = tabSojourn
     plt.show()
 
 
