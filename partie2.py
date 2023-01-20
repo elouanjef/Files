@@ -2,6 +2,7 @@ import ciw
 import matplotlib.pyplot as plt
 from networking import NetworkValues
 from values import Values
+from numpy import linspace, pi
 
 """
 --------------------------Tache2--------------------------------
@@ -21,7 +22,7 @@ v = Values()
 n = NetworkValues()
 n.set_A(15)
 n.reset_network()
-tache = "tache1"
+tache = "tache2"
 
 """
 Code /
@@ -60,38 +61,49 @@ TACHE1 Estimation du temps de séjour avec A = 15
 if tache == "tache1":
     n.set_A(15) # On set la valeur du A au cas où
     n.reset_network() # On recrée un réseau avec cette valeur
-    simu(v.simtime, v.nbexecs, tache) # On fait nbexecs simulations avec A = 15
+    simu(v.arrivee, v.nbexecs, tache) # On fait nbexecs simulations avec A = 15
 
 """
 TACHE2
 """
 
 """
-Donner l’estimation ponctuelle et l’intervalles de con ance pour la mesure de
+Donner l’estimation ponctuelle et l’intervalles de confiance pour la mesure de
 performance.
 ---------> Ca marche pas zebi, a finir, faut peut-être le faire manuellement, pas en python quoi
 """
 
-    # values = type(recs)
-    # print(recs)
-    # mean_performance = mean(values)
-    # stdev_performance = stdev(values)
-    # print(f"\nEstimation ponctuelle: {mean_performance}")
-    # confidence_interval = (mean_performance - (2-(prct/100))*stdev_performance/sqrt(len(values)), mean_performance + (2-(prct/100))*stdev_performance/sqrt(len(values)))
-    # print(f"\nIntervalle de confiance pour la mesure de performance: {confidence_interval}")
+def estim_ponc(arrivee, nbexecs, tch):
+    simu(v.arrivee, v.nbexecs, tache)
+    estim_ponctuelle = sum(v.tabS) / v.nbexecs
+    print(f"Estimation ponctuelle: {estim_ponctuelle}")
+    v.estim_ponc.append(estim_ponctuelle)
+    intervalle_conf_estim_ponc = [estim_ponctuelle * 0.95, estim_ponctuelle * 1.05]
+    v.conf_high.append(intervalle_conf_estim_ponc[1])
+    v.conf_low.append(intervalle_conf_estim_ponc[0])
+    print(f"Intervalle de confiance (avec alpha=5%) de l'estimation ponctuelle: {intervalle_conf_estim_ponc}")
+
+
 """
 Représenter graphiquement l’évolution du temps de séjour en fonction de la valeur du taux
 d’arrivée A.
 ---------> réponse en dessous
 """
+
 if tache == "tache2":
+
     for a in range(15, 51):
         print(f"A={a}")
-        simu(v.simtime, v.nbexecs, tache)
+        estim_ponc(v.arrivee, v.nbexecs, tache)
         n.set_A(a)
         n.reset_network()
         v.tabA.append(a)
-    plt.plot(v.tabA, v.tabS) # Graphe avec x = tabA et y = tabSojourn
+
+    fig, ax = plt.subplots()
+    print(len(v.estim_ponc), len(v.tabA), len(v.conf_low), len(v.conf_high))
+    ax.plot(v.tabA, v.estim_ponc, label="estim")
+    ax.plot(v.tabA, v.conf_high, label="high")
+    ax.plot(v.tabA, v.conf_low, label="low")
     plt.show()
 
 

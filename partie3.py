@@ -53,7 +53,7 @@ if tache == "tache1":
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")
-        simu(v.simtime, v.nbexecs, tache)
+        simu(v.arrivee, v.nbexecs, tache)
         n.set_A(a)
         n.reset_network()
         v.tabA.append(a)
@@ -73,7 +73,7 @@ if tache == "tache1":
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")
-        simu(v.simtime, v.nbexecs, tache)
+        simu(v.arrivee, v.nbexecs, tache)
         n.set_A(a)
         n.reset_network()
         v.tabA.append(a)
@@ -94,7 +94,7 @@ if tache == "tache1":
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")
-        simu(v.simtime, v.nbexecs, tache)
+        simu(v.arrivee, v.nbexecs, tache)
         n.set_A(a)
         n.reset_network()
         v.tabA.append(a)
@@ -115,7 +115,7 @@ if tache == "tache1":
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")
-        simu(v.simtime, v.nbexecs, tache)
+        simu(v.arrivee, v.nbexecs, tache)
         n.set_A(a)
         n.reset_network()
         v.tabA.append(a)
@@ -137,7 +137,7 @@ if tache == "tache2":
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")
-        simu(v.simtime, v.nbexecs, tache)
+        simu(v.arrivee, v.nbexecs, tache)
         n.set_A(a)
         n.reset_network()
         v.tabA.append(a)
@@ -155,7 +155,7 @@ if tache == "tache2":
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")
-        simu(v.simtime, v.nbexecs, tache)
+        simu(v.arrivee, v.nbexecs, tache)
         n.set_A(a)
         n.reset_network()
         v.tabA.append(a)
@@ -179,7 +179,7 @@ if tache == "tache3":
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")
-        simu(v.simtime, v.nbexecs, tache)
+        simu(v.arrivee, v.nbexecs, tache)
         n.set_A(a)
         n.reset_network()
         v.tabA.append(a)
@@ -193,7 +193,7 @@ if tache == "tache3":
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")
-        simu(v.simtime, v.nbexecs, tache)
+        simu(v.arrivee, v.nbexecs, tache)
         n.set_A(a)
         n.reset_network()
         v.tabA.append(a)
@@ -207,7 +207,7 @@ if tache == "tache3":
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")
-        simu(v.simtime, v.nbexecs, tache)
+        simu(v.arrivee, v.nbexecs, tache)
         n.set_A(a)
         n.reset_network()
         v.tabA.append(a)
