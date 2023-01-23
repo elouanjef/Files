@@ -11,7 +11,7 @@ v = Values()
 n = NetworkValues()
 n.set_A(15)
 n.reset_network()
-tache = "tache3"
+tache = "tache1"
 
 """
 Code /
@@ -69,6 +69,8 @@ if tache == "tache1":
     v.tabA = []
     v.tabS = []
     n.set_A(15)
+    n.reset_SR()
+    n.reset_S()
     n.set_R(n.R*2)
     n.reset_network()
     for a in range(minA, maxA):
@@ -89,6 +91,7 @@ if tache == "tache1":
     v.tabA = []
     v.tabS = []
     n.reset_R()
+    n.reset_SR()
     n.set_A(15)
     n.set_S(n.S*2)
     n.reset_network()
@@ -110,6 +113,7 @@ if tache == "tache1":
     v.tabA = []
     v.tabS = []
     n.reset_S()
+    n.reset_R()
     n.set_A(15)
     n.set_SR(n.SR*2)
     n.reset_network()
@@ -175,6 +179,8 @@ if tache == "tache3":
     v.tabA = []
     v.tabS = []
     n.set_A(15)
+    n.reset_SR()
+    n.reset_S()
     n.set_R(n.R*2)
     n.reset_network()
     for a in range(minA, maxA):
@@ -189,7 +195,9 @@ if tache == "tache3":
     v.tabA = []
     v.tabS = []
     n.set_A(15)
-    n.set_R(n.S*2)
+    n.reset_R()
+    n.reset_SR()
+    n.set_S(n.S*2)
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")
@@ -203,7 +211,9 @@ if tache == "tache3":
     v.tabA = []
     v.tabS = []
     n.set_A(15)
-    n.set_R(n.SR*2)
+    n.reset_R()
+    n.reset_S()
+    n.set_SR(n.SR*2)
     n.reset_network()
     for a in range(minA, maxA):
         print(f"A={a}")

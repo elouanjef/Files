@@ -58,17 +58,17 @@ if tache == "tache1":
     # while v.nbexecs <= 600:
     #      simu(v.arrivee, v.nbexecs)
     #      v.nbexecs+=10
-    #
-    # # v.arrivee = 2
-    # # while v.arrivee <= 10:
-    # #      simu(v.arrivee, v.nbexecs)
-    # #      v.arrivee+=1
-    #
-    # graph = v.average_waits_dict.items()
-    # x, y = zip(*graph)
-    #
-    # plt.plot(x, y)
-    # plt.show()
+
+    v.arrivee = 2
+    while v.arrivee <= 10:
+         simu(v.arrivee, v.nbexecs)
+         v.arrivee+=1
+
+    graph = v.average_waits_dict.items()
+    x, y = zip(*graph)
+
+    plt.plot(x, y)
+    plt.show()
 
 """
 Indiquer les manipulations que vous utilisez pour récupérer les résultats du temps moyenne de
